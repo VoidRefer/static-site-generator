@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from htmlnode import HTMLNode, LeafNode
+from src.htmlnode import HTMLNode, LeafNode
 
 class TextType(Enum):
     TEXT = "text"
