@@ -14,3 +14,6 @@ def extract_markdown_links(text: str) -> list[str]:
     split_pattern = re.compile(r'(?<!!)\[(.*?)\]\((.*?)\)')
 
     return _match_markdown_groups(text, split_pattern)
+
+def markdown_to_blocks(markdown: str) -> list[str]:
+    return [block.strip() for block in markdown.split("\n\n") if block]
