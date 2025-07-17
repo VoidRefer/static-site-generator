@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import re
 from enum import Enum
 
 from src.htmlnode import HTMLNode, LeafNode
@@ -51,5 +51,9 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
         case TextType.IMAGE:
             if text_node.url is None:
                 raise ValueError("TextNode misssing url value")
-            return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
+            return LeafNode(
+                "img", 
+                "", 
+                {"src": text_node.url, "alt": text_node.text}
+            )
     raise Exception("Invalid TextType")
