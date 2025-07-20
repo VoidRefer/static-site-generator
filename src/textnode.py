@@ -2,8 +2,22 @@ from __future__ import annotations
 import re
 from enum import Enum
 
-from src.htmlnode import HTMLNode, LeafNode
-from src.markdown import extract_markdown_images, extract_markdown_links
+from htmlnode import HTMLNode, LeafNode
+#from src.markdown import extract_markdown_images, extract_markdown_links
+
+def _match_markdown_groups(text: str, split_pattern: re.Pattern):
+    lst = []
+    for match in split_pattern.finditer(text):
+        lst.append((match.group(1), match.group(2)))
+    return lst
+
+def extract_markdown_images(text: str) -> list[str]:
+    split_pattern = re.compile(r'\!\[(.*?)\]\((.*?)\)')
+    return _match_markdown_groups(text, split_pattern)
+
+def extract_markdown_links(text: str) -> list[str]:
+    split_pattern = re.compile(r'(?<!!)\[(.*?)\]\((.*?)\)')
+    return _match_markdown_groups(text, split_pattern)
 
 class TextType(Enum):
     TEXT = "text"
@@ -28,6 +42,21 @@ class TextNode:
     
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+    
+    # def to_html(self):
+    #     match self.text_type:
+    #         case TextType.BOLD:
+    #             return f"<b>{self.text}</b>"
+    #         case TextType.ITALIC:
+    #             return f"<i>{self.text}</i>"
+    #         case TextType.CODE:
+    #             return f"<code>{self.text}</code>"
+    #         case TextType.LINK:
+    #             return f"<a href='{self.url}'>{self.text}</a>"
+    #         case TextType.IMAGE:
+    #             return f"<img src='{self.url}' alt='{self.text}'>"
+    #         case _:
+    #             return self.text
 
 def split_nodes_delimiter(
         old_nodes: list[TextNode], 

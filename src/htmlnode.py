@@ -50,7 +50,7 @@ class LeafNode(HTMLNode):
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
     
     def to_html(self) -> str:
-        if not self.value:
+        if self.value is None:
             raise ValueError("All leaf nodes must have a value")
         
         if self.tag is None:
@@ -73,6 +73,8 @@ class ParentNode(HTMLNode):
         
         if not self.children:
             return ValueError("Missing children attribute")
-
-        children_html = "".join(child.to_html() for child in self.children)
+        
+        children_html = ""
+        for child in self.children:
+            children_html += child.to_html()
         return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"
